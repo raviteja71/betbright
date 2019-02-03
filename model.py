@@ -6,24 +6,53 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/raviteja/betbright/betB
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
+
+class Sport(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), unique=True, nullable=False)
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Sport Name %r>' % self.name
+
+
 class Selection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), unique=True, nullable=False)
     odds = db.Column(db.Float, unique=True, nullable=False)
+
     def __init__(self, name, odds):
         self.name = name
         self.odds = odds
+
     def __repr__(self):
         return '<Selection %r>' % self.name
+
+
 class market(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), unique=True, nullable=False)
-    selection = db.Column(db.Integer, db.ForeignKey('selection.id'), nullable=False)
+    selection = db.Column(db.Integer, db.ForeignKey('rel_market_selection.market_id'), nullable=False)
+
+    def __init__(self, name, selection):
+        self.name = name
+        self.selection = selection
+
+    def __repr__(self):
+        return '{ "name":"%r"}' % self.name
+
+class rel_market_selection(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    market_id = db.Column(db.Integer,  nullable=False)
+    selection_id = db.Column(db.Integer, nullable=False)
     def __init__(self, name, selection):
         self.name = name
         self.selection = selection
     def __repr__(self):
         return '{ "name":"%r"}' % self.name
+
 class event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), unique=True, nullable=False)
