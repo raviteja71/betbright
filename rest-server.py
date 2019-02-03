@@ -6,6 +6,9 @@ from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
 # See important note below
 from model import Selection
+from model import Event
+from model import Market
+from model import Sport
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/raviteja/betbright/betBright.db'
@@ -33,12 +36,18 @@ def close_connection(exception):
 
 @app.route('/api/match/<match_id>', methods=['GET'])
 def getmatch(match_id):
-    qry = Selection.query.filter_by(id=match_id)
+    qry = Event.query.filter_by(id=match_id)
     result = qry.first()
+
+    u = Event.query.get(1)
+    print(u.match)
 
     return jsonify(id=result.id,
             name=result.name,
-            odds=result.id)
+            url=result.url,
+            start_time=result.start_time,
+            market_id = result.market_id,
+            sport_id = result.sport_id)
 
 
 @app.route('/api/match/?sport=<sport_id>&ordering=<time_now>', methods=['GET'])
