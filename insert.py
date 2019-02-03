@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/raviteja/betbright/betBright.db'
@@ -11,13 +10,15 @@ db = SQLAlchemy(app)
 from model import Market
 from model import Selection
 from model import Event
+from model import Message
+from model import Sport
 
-
-s1 = Selection(name="Real Madrid",odds=1.01);
-s2 = Selection(name="Barcelona",odds=1.01);
+s1 = Selection(name="Poland",odds=3.01)
+s2 = Selection(name="Irland",odds=7.01);
 m1 = Market(name="Winner",selections=[s1,s2])
 
-ev1 = Event("Real Madrid vs Barcelona","http://example.com/api/match/994839351740",1,1)
+ev1 = Event("Poland vs Irland","http://example.com/api/match/2",2,1)
+
 
 db.session.add(m1)
 db.session.add(s1)

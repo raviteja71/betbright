@@ -36,9 +36,9 @@ class Selection(db.Model):
 class Market(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
-    selections = db.relationship("Selection",  backref='market', lazy='dynamic')
+    selections = db.relationship('Selection',  backref='Market', lazy='dynamic')
 
-    def __init__(self, name,selections):
+    def __init__(self, name,selections=[]):
         self.name = name
         self.selections=selections
 
@@ -53,7 +53,9 @@ class Event(db.Model):
     start_time = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     sport_id = db.Column(db.Integer, db.ForeignKey('sport.id'))
     market_id = db.Column(db.Integer, db.ForeignKey('market.id'), nullable=False)
-    market = db.relationship("market", back_populates='Selection')
+    market = db.relationship('Market', uselist=False, backref="image")
+    Market = db.relationship("Market", backref=db.backref("Event", uselist=False))
+    Sport = db.relationship("Sport", backref=db.backref("Event", uselist=False))
 
     def __init__(self, name, url, sport_id, market_id):
         self.name = name
@@ -79,5 +81,3 @@ class Message(db.Model):
 
 db.create_all()
 db.session.commit()
-
-
