@@ -13,6 +13,8 @@ from model import Event
 from model import Message
 from model import Sport
 
+
+#Simple data insertions for available tables
 s1 = Selection(name="Poland",odds=3.01)
 s2 = Selection(name="Irland",odds=7.01);
 m1 = Market(name="Winner",selections=[s1,s2])
